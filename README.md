@@ -16,7 +16,7 @@
 1. 获取源码资源包
 
    ```
-   git clone https://github.com/1253850932/teacher-project.git
+   git clone https://github.com/1253850932/teacher-judge-system.git
    ```
 
 
@@ -182,3 +182,18 @@ teacher-judge-project
         }
 	```	
 3. 准备**dom**容器 `  <div id="course" :style="{ width: '424px', height: '250px' }"></div>`
+
+### Git 提交规范
+```markdown
+	feat: 新功能
+	fix: 修复bug
+	docs: 只有文档改变
+	style: 并没有影响代码的意义(空格，去掉分号，格式的修改等)
+	refactor: 代码的修改并没有修改bug，也没有添加新功能
+	perf: 代码的修改提高的性能
+	test: 添加测试
+	build: 影响构建系统或外部依赖项的更改(maven,gradle,npm 等等)
+	ci: 对CI配置文件和脚本的更改
+	chore：对非 src 和 test 目录的修改
+	revert: Revert a commit
+```
