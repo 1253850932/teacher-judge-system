@@ -51,7 +51,7 @@ import * as echarts from 'echarts'
 
 export default defineComponent({
     setup() {
-        /// 声明定义一下echart
+        // 声明定义一下echart
         let echart = echarts
 
         onMounted(() => {

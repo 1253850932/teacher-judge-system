@@ -23,7 +23,7 @@
 2. 安装依赖，国内推荐使用cnpm或tyarn，国外推荐使用npm或yarn
 
    ```
-   npm install
+   npm install \ npm install --legacy-peer-deps
    ```
 
    
@@ -31,7 +31,7 @@
 3. 运行
 
    ```
-   npm run dev 或 npm run start
+   npm run dev 
    ```
 
    
@@ -128,3 +128,57 @@ teacher-judge-project
 		"@": "${workspaceRoot}/src"
 	  }
 	```
+
+### 使用Echarts
+ 1. `import * as echarts from 'echarts'`
+ 2. 在setup中声明
+ 	 ```js
+	  // 声明定义一下echart
+        let echart = echarts
+		onMounted(() => {
+            courseChart()   
+        })
+		onUnmounted(() => {
+            courseChart.dispose
+        })
+	  // 基础配置一下Echarts
+	    const courseChart = () => {
+            let chart = echart.init(document.getElementById('course'), null, {
+                width: 380,
+                height: 250
+            })
+            // 把配置和数据放这里
+            chart.setOption({
+                legend: {
+                    // Try 'horizontal'
+                    right: 0,
+                    top: 0
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                series: [
+                    {
+                        name: '人数',
+                        type: 'pie',
+                        data: [
+                            {
+                                value: 335,
+                                name: '学生'
+                            },
+                            {
+                                value: 234,
+                                name: '教师'
+                            }
+                        ]
+                    }
+                ]
+            })
+            window.onresize = function () {
+                //自适应大小
+                chart.resize()
+            }
+        }
+	```	
+3. 准备**dom**容器 `  <div id="course" :style="{ width: '424px', height: '250px' }"></div>`
