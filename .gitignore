@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -9,3 +10,13 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
+=======
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+yarn.lock
+yarn-error.log
+.vscode
+>>>>>>> 7ddc865
