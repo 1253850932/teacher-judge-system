@@ -2,6 +2,7 @@
     <div class="container">
         <div class="box">
             <el-form class="form">
+                <span>教师评价管理系统</span>
                 <el-input size="large" v-model="form.name" placeholder="用户名" type="text" maxlength="50"> </el-input>
                 <el-input size="large" ref="password" v-model="form.password" :type="passwordType" placeholder="密码" name="password" maxlength="50">
                     <template #append>
@@ -97,10 +98,10 @@ export default defineComponent({
     background-color: #eef0f3;
 
     .box {
-        width: 516px;
-        height: 500px;
+        width: 400px;
+        height: 350px;
         position: absolute;
-        left: 60%;
+        left: 63.6%;
         top: 50%;
         background: white;
         transform: translateY(-50%);
@@ -113,7 +114,16 @@ export default defineComponent({
             font-size: 16px;
         }
         .form {
-            margin: 50px auto 15px;
+            display: flex;
+            width: 250px;
+            flex-wrap: wrap;
+            margin: 65px auto 15px;
+            span {
+                margin: 0 auto;
+                margin-bottom: 30px;
+                font-weight: 600;
+                font-size: 18px;
+            }
             .el-input {
                 width: 250px;
                 margin: 0 auto;

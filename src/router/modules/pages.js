@@ -6,7 +6,7 @@ const route = [
         path: '/pages',
         component: Layout,
         redirect: '/pages/crudTable',
-        meta: { title: '页面', icon: 'el-icon-document-copy', roles: ['admin'] },
+        meta: { title: '首页', icon: 'el-icon-circle-plus ', roles: ['admin'] },
         alwayShow: true,
         children: [
             {
@@ -30,7 +30,7 @@ const route = [
         path: '/course',
         component: Layout,
         redirect: '/course/check',
-        meta: { title: '课程管理', icon: 'el-icon-document-copy', roles: ['admin'] },
+        meta: { title: '课程管理', icon: 'el-icon-house', roles: ['admin'] },
         alwayShow: true,
         children: [
             {
@@ -49,7 +49,7 @@ const route = [
         path: '/teacher',
         component: Layout,
         redirect: '/teacher/revise',
-        meta: { title: '教师管理', icon: 'el-icon-document-copy', roles: ['editor'] },
+        meta: { title: '教师管理', icon: 'el-icon-rank', roles: ['editor'] },
         alwayShow: true,
         children: [
             {
@@ -97,12 +97,12 @@ const route = [
             },
             {
                 path: 'add',
-                component: createNameComponent(() => import('@/views/student/add/index.vue')),
+                component: createNameComponent(() => import('@/views/quota/add/index.vue')),
                 meta: { title: '添加评价任务', cache: false, roles: ['admin', 'editor'] }
             },
             {
                 path: 'count',
-                component: createNameComponent(() => import('@/views/student/count/index.vue')),
+                component: createNameComponent(() => import('@/views/quota/count/index.vue')),
                 meta: { title: '老师评价统计', cache: false, roles: ['admin', 'editor'] }
             }
         ]

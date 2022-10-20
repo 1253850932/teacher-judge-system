@@ -109,9 +109,12 @@ export default defineComponent({
             })
             // 把配置和数据放这里
             chart.setOption({
-                legend: {},
+                legend: {
+                    right: 50,
+                    top: 0
+                },
                 title: {
-                    text: '饼图程序调用高亮示例'
+                    text: '调用高亮示例'
                 },
 
                 tooltip: {
