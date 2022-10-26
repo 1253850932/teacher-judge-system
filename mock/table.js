@@ -11,9 +11,9 @@ export default [
                         {
                             'id|+1': 0,
                             name: '@cname',
-                            'number|+1': 500,
-                            'choose|1': [1, 2, 3, 4],
-                            'radio|1': [1, 2, 3]
+                            'number|+1': 193000000,
+                            'choose|1': [1, 2, 3, 4, 5, 6],
+                            'radio|1': [1, 2, 3, 4, 5, 6]
                         }
                     ],
                     pager: {

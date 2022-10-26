@@ -18,6 +18,7 @@
 import { defineComponent, ref, watch } from 'vue'
 import drag from '@/directive/drag/index'
 export default defineComponent({
+    name: 'Layer',
     props: {
         layer: {
             type: Object,

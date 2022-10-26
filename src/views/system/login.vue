@@ -30,7 +30,7 @@ export default defineComponent({
         const router = useRouter()
         const route = useRoute()
         const form = reactive({
-            name: 'admin',
+            name: 'system',
             password: '123456'
         })
         const passwordType = ref('password')
@@ -64,13 +64,14 @@ export default defineComponent({
                     name: form.name,
                     password: form.password
                 }
-                store.dispatch('user/login', params).then(() => {
+                store.dispatch('user/login', params).then(data => {
                     ElMessage.success({
                         message: '登录成功',
                         type: 'success',
                         showClose: true,
                         duration: 1000
                     })
+
                     addRoutes()
                     // 重定向
                     router.push(route.query.redirect || '/')

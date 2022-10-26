@@ -1,7 +1,7 @@
 import vue from '@vitejs/plugin-vue'
 import { viteMockServe } from 'vite-plugin-mock'
 import { resolve } from 'path'
-
+import Components from 'unplugin-vue-components/vite'
 // 路径拼接
 const pathResolve = dir => {
     return resolve(__dirname, '.', dir)
@@ -46,6 +46,9 @@ export default ({ command }) => {
 				setupProdMockServer();
 				`,
                 logger: true
+            }),
+            Components({
+                dirs: ['src/components/library']
             })
         ]
     }

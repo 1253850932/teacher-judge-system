@@ -1,9 +1,9 @@
 // @ts-nocheck
 const users = [
     {
-        name: 'admin',
+        name: 'system',
         password: '123456',
-        token: 'admin',
+        token: 'system',
         info: {
             name: '系统管理员'
         }
@@ -13,7 +13,7 @@ const users = [
         password: '123456',
         token: 'teacher',
         info: {
-            name: '编辑人员'
+            name: '教师'
         }
     },
     {
@@ -21,7 +21,7 @@ const users = [
         password: '123456',
         token: 'student',
         info: {
-            name: '测试人员'
+            name: '学生'
         }
     }
 ]

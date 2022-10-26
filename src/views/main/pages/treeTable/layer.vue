@@ -64,6 +64,7 @@ export default defineComponent({
             } else {
             }
         }
+        console.log(layerDom.value)
         return {
             form,
             rules,

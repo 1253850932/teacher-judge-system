@@ -197,3 +197,72 @@ teacher-judge-project
 	chore：对非 src 和 test 目录的修改
 	revert: Revert a commit
 ```
+
+
+### 自动注册全局组件
+ 1. VueCli 
+    >扩展vue原有的功能：全局组件，自定义指令，挂载原型方法，注意：没有全局过滤器。
+    -	vue3.0插件写法要素：导出一个对象，有install函数，默认传入了app应用实例，app基础之上扩展
+    -	`import XtxMore from './xtx-more.vue'`
+	-	导入library文件夹下的所有组件
+	-	批量导入需要使用一个函数 require.context(dir,deep,matching)
+	-	参数：1. 目录  2. 是否加载子目录  3. 加载的正则匹配
+	```js
+		const importFn = require.context('./', false, /\.vue$/)
+		export default {
+			install(app){
+				//在app上进行扩展，	app提供component directive 函数
+				//如果要挂载原型，app.config.globalProperties 方式
+				// 批量注册全局组件
+				 importFn.keys().forEach(key => {
+					// 导入组件
+					const component = importFn(key).default
+					// 注册组件
+					app.component(component.name, component)
+				})
+				  // 自定义指令
+				defineDirective(app)
+				app.config.globalProperties.$message = Message
+			}
+		}	
+	```
+2. vite
+   1. 使用 import.meta.glob() 
+		-	// import.meta.glob()  
+		-   // import.meta.globEager()
+	
+		```js
+				import { defineAsyncComponent } from 'vue'
+				const components = import.meta.glob('../library/*.vue')
+				console.log(components)
+				export default function install(app) {
+					for (const [key, value] of Object.entries(components)) {
+						const name = key.slice(key.lastIndexOf('/') + 1, key.lastIndexOf('.'))
+						console.log(name, value)
+						app.component(name, defineAsyncComponent(value))
+					}
+				}
+    	```
+   2. 使用 *unplugin-vue-components* 插件
+      > 放在 src/components  文件夹里面
+       + `npm i unplugin-vue-components`
+       + `import Components from 'unplugin-vue-components/vite'`
+       +  ```js 
+		        plugins: [
+					vue(),
+					viteMockServe({
+						mockPath: 'mock',
+						localEnabled: command === 'serve',
+						prodEnabled: command !== 'serve' && prodMock,
+						watchFiles: true,
+						injectCode: `
+						import { setupProdMockServer } from '../mockProdServer';
+						setupProdMockServer();
+						`,
+						logger: true
+					}),
+					Components({
+						dirs: ['src/components/library']
+					})
+				]
+		  ```	

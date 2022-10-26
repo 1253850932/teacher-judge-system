@@ -14,12 +14,14 @@
                 <el-button type="primary" icon="el-icon-search" class="search-btn" @click="getTableData(true)">搜索</el-button>
             </div>
         </div>
+
+        <!-- 内容展示区 -->
         <div class="layout-container-table">
             <Table ref="table" v-model:page="page" v-loading="loading" :showIndex="true" :showSelection="true" :data="tableData" @getTableData="getTableData" @selection-change="handleSelectionChange">
-                <el-table-column prop="name" label="名称" align="center" />
-                <el-table-column prop="number" label="数字" align="center" />
-                <el-table-column prop="chooseName" label="选择器" align="center" />
-                <el-table-column prop="radioName" label="单选框" align="center" />
+                <el-table-column prop="name" label="名字" align="center" />
+                <el-table-column prop="number" label="学号" align="center" />
+                <el-table-column prop="chooseName" label="专业" align="center" />
+                <el-table-column prop="radioName" label="班级" align="center" />
                 <el-table-column label="操作" align="center" fixed="right" width="200">
                     <template #default="scope">
                         <el-button @click="handleEdit(scope.row)">编辑</el-button>
@@ -86,6 +88,7 @@ export default defineComponent({
                 pageSize: page.size,
                 ...query
             }
+            // 异步从后端拿到数据
             getData(params)
                 .then(res => {
                     let data = res.data.list
@@ -128,13 +131,13 @@ export default defineComponent({
         }
         // 新增弹窗功能
         const handleAdd = () => {
-            layer.title = '新增数据'
+            layer.title = '新增学生信息'
             layer.show = true
             delete layer.row
         }
         // 编辑弹窗功能
         const handleEdit = row => {
-            layer.title = '编辑数据'
+            layer.title = '编辑学生信息'
             layer.row = row
             layer.show = true
         }

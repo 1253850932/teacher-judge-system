@@ -9,11 +9,13 @@
                     </template>
                 </el-popconfirm>
             </div>
+
             <div class="layout-container-form-search">
                 <el-input v-model="query.input" placeholder="请输入关键词进行检索" @change="getTableData(true)"></el-input>
                 <el-button type="primary" icon="el-icon-search" class="search-btn" @click="getTableData(true)">搜索</el-button>
             </div>
         </div>
+
         <div class="layout-container-table">
             <Table ref="table" v-model:page="page" v-loading="loading" :showIndex="true" :showSelection="true" :data="tableData" @getTableData="getTableData" @selection-change="handleSelectionChange">
                 <el-table-column prop="name" label="名称" align="center" />

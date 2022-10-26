@@ -28,6 +28,7 @@
 <script>
 import { defineComponent } from 'vue'
 export default defineComponent({
+    name: 'table',
     props: {
         data: { type: Array, default: () => [] }, // 数据源
         select: { type: Array, default: () => [] }, // 已选择的数据，与selection结合使用

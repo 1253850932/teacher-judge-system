@@ -1,18 +1,18 @@
 <template>
     <Layer :layer="layer" @confirm="submit" ref="layerDom">
         <el-form :model="form" :rules="rules" ref="ruleForm" label-width="120px" style="margin-right: 30px">
-            <el-form-item label="名称：" prop="name">
-                <el-input v-model="form.name" placeholder="请输入名称"></el-input>
+            <el-form-item label="名字：" prop="name">
+                <el-input v-model="form.name" placeholder="请输入名字"></el-input>
             </el-form-item>
-            <el-form-item label="数字：" prop="number">
+            <el-form-item label="学号：" prop="number">
                 <el-input v-model="form.number" oninput="value=value.replace(/[^\d]/g,'')" placeholder="只能输入正整数"></el-input>
             </el-form-item>
-            <el-form-item label="选择器：" prop="select">
+            <el-form-item label="专业：" prop="select">
                 <el-select v-model="form.choose" placeholder="请选择" clearable>
                     <el-option v-for="item in selectData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="单选框：" prop="radio">
+            <el-form-item label="班级：" prop="radio">
                 <el-radio-group v-model="form.radio">
                     <el-radio v-for="item in radioData" :key="item.value" :label="item.value">{{ item.label }}</el-radio>
                 </el-radio-group>
@@ -38,7 +38,7 @@ export default defineComponent({
             default: () => {
                 return {
                     show: false,
-                    title: '',
+                    title: '新增学生',
                     showButton: true
                 }
             }
@@ -50,6 +50,7 @@ export default defineComponent({
         let form = ref({
             name: ''
         })
+        // 提醒规则
         const rules = {
             name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
             number: [{ required: true, message: '请输入数字', trigger: 'blur' }],
@@ -74,6 +75,7 @@ export default defineComponent({
         }
     },
     methods: {
+        // 提交
         submit() {
             if (this.ruleForm) {
                 this.ruleForm.validate(valid => {

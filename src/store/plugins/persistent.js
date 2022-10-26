@@ -1,3 +1,5 @@
+// 路由持久化
+
 const exclude = ['actions', 'getters', 'mutations', 'namespaced']
 export default function Presistent({ key, modules, modulesKeys }) {
     return store => {

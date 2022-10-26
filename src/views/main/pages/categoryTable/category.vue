@@ -34,6 +34,7 @@ export default defineComponent({
         let loading = ref(true)
         let active = inject('active')
         let nomore = ref(false)
+        // 异步从后端拿到数据
         const getCategoryData = init => {
             loading.value = true
             if (init || firstLoading.value) {
@@ -72,6 +73,7 @@ export default defineComponent({
                     loading.value = false
                 })
         }
+        // 防抖
         const searchData = debounce(300, getCategoryData)
         const changeActive = row => {
             active.value = row

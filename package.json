@@ -27,6 +27,7 @@
         "@vitejs/plugin-vue": "^1.2.2",
         "@vue/compiler-sfc": "^3.0.5",
         "sass": "^1.32.12",
+        "unplugin-vue-components": "^0.22.9",
         "vite": "2.3.7",
         "vite-plugin-mock": "2.8.0",
         "vue-tsc": "^0.0.24"
