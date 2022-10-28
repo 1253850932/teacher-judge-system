@@ -1,10 +1,16 @@
 <template>
-    <div class="box">我是首页</div>
+    <div class="box">
+        <CheckInfo />
+    </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-export default defineComponent({})
+// @ts-nocheck
+
+import { defineComponent, ref } from 'vue'
+export default defineComponent({
+    setup() {}
+})
 </script>
 
 <style lang="scss" scoped>

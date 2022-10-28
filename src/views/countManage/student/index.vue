@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <EditDialog></EditDialog>
+        <AddInfo />
     </div>
 </template>
 
@@ -12,5 +12,6 @@ export default defineComponent({})
 <style lang="scss" scoped>
 .box {
     padding: 15px;
+    background-color: #fbfcfd;
 }
 </style>

@@ -10,7 +10,7 @@
 
 import { defineAsyncComponent } from 'vue'
 const components = import.meta.glob('../library/*.vue')
-console.log(components)
+// console.log(components)
 export default function install(app) {
     for (const [key, value] of Object.entries(components)) {
         const name = key.slice(key.lastIndexOf('/') + 1, key.lastIndexOf('.'))

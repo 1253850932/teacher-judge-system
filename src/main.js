@@ -10,12 +10,12 @@ import './assets/style/common.scss' // 公共css
 import App from './App.vue'
 import store from './store'
 import router from './router'
-import components from '@/components/library'
+// import components from '@/components/library'
 
 const app = createApp(App)
 app.use(ElementPlus, { size: store.state.app.elementSize })
 app.use(store)
 app.use(router)
-app.use(components)
+// app.use(components)
 // app.config.performance = true
 app.mount('#app')
