@@ -7,9 +7,10 @@
                     <span>师生人数</span>
                 </div>
             </template>
+            <!-- 饼图 -->
             <div id="course" :style="{ width: '424px', height: '250px' }"></div>
             <!-- 地图容器 -->
-            <baidu-map class="map" :center="{ lng: 106.6025706, lat: 29.4293058 }" :zoom="15" :scroll-wheel-zoom="true">
+            <baidu-map class="map" ak="hbQ9VR8fC3bpClYtQf99pejEqvjaxnhR" :center="{ lng: 106.6025706, lat: 29.4293058 }" :zoom="15" :scroll-wheel-zoom="true">
                 <bm-marker :position="{ lng: 106.6025706, lat: 29.4293058 }" :dragging="true" @click="infoWindowOpen">
                     <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT" offset="6"></bm-scale>
                     <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
@@ -44,6 +45,7 @@
             </el-card>
             <!-- 统计 -->
             <el-card shadow="always" class="box-card-bottom">
+                <!-- 折线图 -->
                 <div id="barEcharts"></div>
             </el-card>
         </div>
@@ -54,11 +56,24 @@
 // @ts-nocheck
 
 import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
-import * as echarts from 'echarts'
 import { BaiduMap, BmGeolocation, BmMarker, BmLabel, BmInfoWindow, BmScale } from 'vue-baidu-map-3x'
+import * as echarts from 'echarts'
+
+// 引入Echarts
+// import echarts from '@/utils/echarts.js'
 export default defineComponent({
     components: { BaiduMap, BmGeolocation, BmMarker, BmLabel, BmInfoWindow, BmScale },
     setup() {
+        // 地图
+        const show = ref(true)
+
+        const infoWindowClose = () => {
+            show.value = false
+        }
+        const infoWindowOpen = () => {
+            show.value = true
+        }
+
         // 声明定义一下echart
         let echart = echarts
 
@@ -150,15 +165,6 @@ export default defineComponent({
             }
         }
 
-        // 地图
-        const show = ref(true)
-
-        const infoWindowClose = () => {
-            show.value = false
-        }
-        const infoWindowOpen = () => {
-            show.value = true
-        }
         return { courseChart, barChart, show, infoWindowOpen, infoWindowClose }
     }
 })
