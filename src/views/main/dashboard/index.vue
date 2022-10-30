@@ -8,7 +8,14 @@
                 </div>
             </template>
             <div id="course" :style="{ width: '424px', height: '250px' }"></div>
-            <div class="map"></div>
+            <!-- 地图容器 -->
+            <baidu-map class="map" :center="{ lng: 106.6025706, lat: 29.4293058 }" :zoom="15" :scroll-wheel-zoom="true">
+                <bm-marker :position="{ lng: 106.6025706, lat: 29.4293058 }" :dragging="true" @click="infoWindowOpen">
+                    <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT" offset="6"></bm-scale>
+                    <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
+                    <bm-info-window :show="show" @close="infoWindowClose" @open="infoWindowOpen">重庆工程学院</bm-info-window>
+                </bm-marker>
+            </baidu-map>
         </el-card>
         <!-- 课程 -->
         <div>
@@ -46,10 +53,11 @@
 <script>
 // @ts-nocheck
 
-import { defineComponent, onMounted, onUnmounted } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import * as echarts from 'echarts'
-
+import { BaiduMap, BmGeolocation, BmMarker, BmLabel, BmInfoWindow, BmScale } from 'vue-baidu-map-3x'
 export default defineComponent({
+    components: { BaiduMap, BmGeolocation, BmMarker, BmLabel, BmInfoWindow, BmScale },
     setup() {
         // 声明定义一下echart
         let echart = echarts
@@ -142,7 +150,16 @@ export default defineComponent({
             }
         }
 
-        return { courseChart, barChart }
+        // 地图
+        const show = ref(true)
+
+        const infoWindowClose = () => {
+            show.value = false
+        }
+        const infoWindowOpen = () => {
+            show.value = true
+        }
+        return { courseChart, barChart, show, infoWindowOpen, infoWindowClose }
     }
 })
 </script>
@@ -170,6 +187,7 @@ export default defineComponent({
             margin: 0 auto;
             width: 350px;
             height: 300px;
+            border-radius: 50px;
             background-color: #bfa;
         }
     }
