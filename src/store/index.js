@@ -2,7 +2,7 @@
 import { createStore, createLogger } from 'vuex'
 import Presistent from './plugins/persistent'
 const debug = process.env.NODE_ENV !== 'production'
-
+import createPersistedState from 'vuex-plugin-persistedstate'
 const files = import.meta.globEager('./modules/*.js')
 
 let modules = {}

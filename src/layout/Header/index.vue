@@ -17,6 +17,7 @@
             </div>
             <!-- 用户信息 -->
             <div class="user-info">
+                <el-avatar :src="userAvatar" />
                 <el-dropdown>
                     <span class="el-dropdown-link">
                         {{ userInfo }}
@@ -38,12 +39,12 @@
 <script>
 import { defineComponent, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
 import FullScreen from './functionList/fullscreen.vue'
 import SizeChange from './functionList/sizeChange.vue'
 import Theme from './functionList/theme.vue'
 import Breadcrumb from './Breadcrumb.vue'
 import PasswordLayer from './passwordLayer.vue'
+import { useRouter } from 'vue-router'
 export default defineComponent({
     components: {
         FullScreen,
@@ -54,26 +55,27 @@ export default defineComponent({
     },
     setup() {
         const store = useStore()
-        const router = useRouter()
-        const route = useRoute()
+
         const layer = reactive({
             show: false,
             showButton: true
         })
         // 登录人员信息
-        const userInfo = computed(() => store.state.user.info.name)
+        const userInfo = computed(() => store.state.user.info.nickname)
+        const userAvatar = computed(() => store.state.user.info.avatar)
 
-        const isCollapse = computed(() => store.state.app.isCollapse)
         // 侧边栏显示\隐藏
+        const isCollapse = computed(() => store.state.app.isCollapse)
         const opendStateChange = () => {
             store.commit('app/isCollapseChange', !isCollapse.value)
         }
-
+        const router = useRouter()
         // 退出登录
         const loginOut = () => {
-            store.dispatch('user/loginOut')
+            localStorage.clear()
+            router.push('/login')
         }
-
+        // 显示改变密码层
         const showPasswordLayer = () => {
             layer.show = true
         }
@@ -83,7 +85,8 @@ export default defineComponent({
             opendStateChange,
             loginOut,
             showPasswordLayer,
-            userInfo
+            userInfo,
+            userAvatar
         }
     }
 })
@@ -137,8 +140,16 @@ header {
         }
     }
     .user-info {
+        display: flex;
+        align-items: center;
         margin-left: 20px;
+        .el-avatar {
+            height: 37px;
+            width: 37px;
+        }
         .el-dropdown-link {
+            font-size: 15px;
+            height: 100%;
             color: var(--system-header-breadcrumb-text-color);
         }
     }

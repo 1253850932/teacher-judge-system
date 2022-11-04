@@ -1,9 +1,15 @@
 // @ts-nocheck
-import { loginApi, getInfoApi, loginOutApi } from '@/api/user'
+import { userAccountLogin, loginOutApi, getCaptcha } from '@/api/user'
 
 const state = () => ({
-    token: '', // 登录token
-    info: {} // 用户信息
+    token: 'system',
+    authorization: '',
+    info: {}, // 用户信息
+    // 验证码
+    captcha: {
+        captchaKey: '',
+        captchaImg: ''
+    }
 })
 
 // getters
@@ -20,33 +26,50 @@ const mutations = {
     },
     infoChange(state, info) {
         state.info = info
+    },
+    captchaChange(state, captcha) {
+        state.captcha = captcha
+    },
+    authorizationChange(state, authorization) {
+        state.authorization = authorization
     }
 }
 
 // actions
 const actions = {
-    // login by login.vue
+    // 通过login.vue登录
     login({ commit, dispatch }, params) {
         return new Promise((resolve, reject) => {
-            loginApi(params).then(res => {
-                commit('tokenChange', res.data.token)
-                dispatch('getInfo', { token: res.data.token }).then(infoRes => {
-                    resolve(res.data.token)
-                })
+            userAccountLogin(params).then(data => {
+                console.log(data)
+                commit('authorizationChange', data.headers.authorization)
+                commit('infoChange', data.data.data)
+                resolve(data.data)
             })
         })
     },
-    // get user info after user logined
-    getInfo({ commit }, params) {
-        return new Promise((resolve, reject) => {
-            getInfoApi(params).then(res => {
-                commit('infoChange', res.data.info)
-                resolve(res.data.info)
+    // 获取验证码信息
+    getCaptcha({ commit }) {
+        return new Promise(() => {
+            getCaptcha().then(data => {
+                commit('captchaChange', data.data.data)
             })
         })
+    },
+    // 改变验证码
+    changeCaptcha({ commit }, captcha) {
+        return new Promise(() => {
+            getCaptcha(captcha).then(data => {
+                commit('captchaChange', data.data.data)
+            })
+        })
+    },
+    // 拿到Token
+    async getToken({ commit }, token) {
+        await commit('tokenChange', token)
     },
 
-    // login out the system after user click the loginOut button
+    // 用户点击退出，退出系统
     loginOut({ commit }) {
         loginOutApi()
             .then(res => {})

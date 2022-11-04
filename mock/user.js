@@ -1,7 +1,7 @@
 // @ts-nocheck
 const users = [
     {
-        name: 'system',
+        username: 'system',
         password: '123456',
         token: 'system',
         info: {
@@ -37,7 +37,12 @@ export default [
                 return {
                     code: 200,
                     data: {
-                        token: user.token
+                        token: user.token,
+                        userId: '123132',
+                        avatar: 'adf',
+                        username: '2342',
+                        nickname: 'sdfdf',
+                        roleName: '管理员'
                     }
                 }
             } else {

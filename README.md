@@ -266,3 +266,130 @@ teacher-judge-project
 					})
 				]
 		  ```	
+
+### vue3 父组件使用子组件的函数
+	 refs 可以拿到子组件的对象
+	 子组件需要return暴露出去
+   1. 父组件
+```vue
+		<template>
+			父组件
+			<div @click="changeChild">改变子组件函数</div>
+			<Child ref='child'>子组件</Child>
+		</template>
+		<script>
+		import {ref} from 'vue'
+		export default {
+			setup(){
+				const child = ref(null)
+				const changeChild=(){
+					child.value.changeShow()
+				}
+				return{changeChild}
+			}
+		}
+		</script>
+```	
+  2. 子组件
+```vue
+		<template>
+			子组件
+		</template>
+		<script>
+		import {ref} from 'vue'
+		export default {
+			setup(){
+				const show =ref(false)
+				const changeShow = ()=>{
+					show.value = true
+				}
+				return{show,changeShow}
+			}
+		}
+		</script>
+```	
+
+### Axios请求传递请求头
+> config.headers['Authorization'] = `Bearer ${store.state.user.authorization}`
+```js
+	// 请求前的统一处理 拦截请求函数
+	instance.interceptors.request.use(
+		config => {
+			// JWT鉴权处理
+			if (store.state.user.authorization) {
+				config.headers['Authorization'] = `Bearer ${store.state.user.authorization}`
+			}
+			return config
+		},
+		error => {
+			console.log(error) // for debug
+			return Promise.reject(error)
+		}
+	)
+```
+### 跨域问题
+> vite.config.js
+
+```js
+	    server: {
+            port: '8000',
+            proxy: {
+                '/api': {
+                    target: 'http://121.43.163.227:9001', // 凡是遇到 /api 路径的请求，都映射到 target 属性 目标地址
+                    changeOrigin: true, // 是否跨域
+                    rewrite: path => path.replace(/^\/api/, '')
+                }
+            }
+        },
+```	
+>  request.js
+
+```js 
+const baseURL = '/api'
+
+const instance = axios.create({
+    baseURL,
+    timeout: 5000
+})
+```
+
+### vue3 子组件向父组件传递值
+子组件 child.vue
+```vue
+		<template>
+			子组件
+			<div @click="send">发送</div>
+		</template>
+		<script>
+		export default {
+			setup({emit}){
+				const show = false
+				const send = ()=>{
+					emit('sendFather',show)
+				}
+				return{send}
+			}
+		}
+		</script>
+```
+父组件 father.vue
+```vue
+ 		<template>
+			父组件
+			<!--@sendFather是子组件中定义的方法--emit('sendFather',show)， "sendFather"是父组件定义接受的函数 -->
+			<Child @sendFather="sendFather"></Child>
+		</template>
+		<script>
+		import Child form child.vue
+		export default {
+			components:{Child},
+			setup({emit}){
+				const sendFather = (value)=>{
+					// value 是子组件传递过来的
+					console.log(value)
+				}
+				return {sendFather}
+			}
+		}
+		</script>
+```		

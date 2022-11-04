@@ -6,12 +6,12 @@ const route = [
         path: '/',
         component: Layout,
         redirect: '/dashboard',
-        meta: { title: ' ', icon: 'el-icon-menu', roles: ['teacher', 'system', 'student'] },
+        meta: { title: ' ', icon: 'el-icon-menu' },
         children: [
             {
                 path: 'dashboard',
                 component: createNameComponent(() => import('@/views/main/dashboard/index.vue')),
-                meta: { title: '首页', icon: 'el-icon-house', hideClose: true, roles: ['teacher', 'system', 'student'] }
+                meta: { title: '首页', icon: 'el-icon-house', hideClose: true }
             }
         ]
     }

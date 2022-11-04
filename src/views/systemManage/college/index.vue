@@ -2,7 +2,7 @@
     <el-card class="box-card">
         <template #header>
             <div class="card-header">
-                <span>课程设置</span>
+                <span>院系设置</span>
                 <el-input size="small" placeholder="Please Input" :suffix-icon="Search" />
                 <el-icon size="17"><Search /></el-icon>
             </div>
@@ -20,7 +20,9 @@ export default defineComponent({
         // 接收父组件数据
     },
     components: { Search },
-    setup(props, ctx) {}
+    setup(props, ctx) {
+        return {}
+    }
 })
 </script>
 <style lang="scss" scoped>

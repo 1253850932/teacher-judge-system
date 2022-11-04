@@ -1,43 +1,43 @@
 <template>
-    <el-form :inline="true" :model="form" label-width="100px" class="form">
-        <el-form-item :label="form.id === 0 ? '教师名称' : '学生名称'">
-            <el-input v-model="form.name" :placeholder="form.id === 0 ? '请输入教师名称' : '请输入学生名称'" class="inputWidth" />
+    <el-form :model="form" label-width="150px" class="form" :rules="rules" ref="ruleFormRef">
+        <el-form-item :label="'名称'">
+            <el-input v-model="form.username" :placeholder="'名称'" class="inputWidth" />
         </el-form-item>
-        <el-form-item :label="form.id === 0 ? '教师性别' : '学生名称'">
-            <el-radio-group v-model="form.sex" class="ml-4">
-                <el-radio label="1" size="large">男</el-radio>
-                <el-radio label="2" size="large">女</el-radio>
+        <el-form-item :label="'密码'">
+            <el-input v-model="form.password" :placeholder="'请输入联系方式'" />
+        </el-form-item>
+        <el-form-item :label="'性别'">
+            <el-radio-group v-model="form.gender" class="ml-4">
+                <el-radio label="男" size="large">男</el-radio>
+                <el-radio label="女" size="large">女</el-radio>
             </el-radio-group>
         </el-form-item>
-        <!-- 上传头像 -->
-        <el-form-item :label="form.id === 0 ? '教师头像' : '学生头像'" class="avatar">
-            <!-- <el-upload
-                class="avatar-uploader"
-                action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-            >
-                <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-            </el-upload> -->
+        <el-form-item :label="'角色'">
+            <el-radio-group v-model="form.roleId" class="ml-4">
+                <el-radio label="1585472797252001794" size="large">学生</el-radio>
+                <el-radio label="1585472740486410241" size="large">教师</el-radio>
+            </el-radio-group>
         </el-form-item>
-        <el-form-item :label="form.id === 0 ? '教师院系' : '学生院系'">
-            <el-cascader v-model="value" :options="options" @change="handleChange" />
-        </el-form-item>
-        <el-form-item :label="form.id === 0 ? '教师专业' : '学生专业'">
-            <el-cascader v-model="value" :options="options" @change="handleChange" />
+        <el-form-item :label="'院系/专业'" class="item">
+            <el-cascader :options="options" @change="handleChange" />
         </el-form-item>
 
-        <el-form-item :label="form.id === 0 ? '教师联系方式' : '学生联系方式'">
-            <el-input v-model="form.phone" :placeholder="form.id === 0 ? '请输入教师联系方式' : '请输入学生联系方式'" />
+        <el-form-item :label="'联系方式'">
+            <el-input v-model="form.phone" :placeholder="'请输入联系方式'" />
         </el-form-item>
-        <el-form-item :label="form.id === 0 ? '教师地址' : '学生地址'">
-            <el-input v-model="form.address" :placeholder="form.id === 0 ? '请输入教师地址' : '请输入学生地址'" />
+        <el-form-item :label="'电子邮箱'">
+            <el-input v-model="form.email" :placeholder="'请输入电子邮箱'" />
+        </el-form-item>
+        <el-form-item :label="'地址'">
+            <el-input v-model="form.address" :placeholder="'请输入地址'" />
         </el-form-item>
 
         <el-form-item label="详细介绍">
-            <el-input v-model="form.information" :autosize="{ minRows: 10, maxRows: 15 }" class="text-area" type="textarea" />
+            <el-input v-model="form.description" :autosize="{ minRows: 7, maxRows: 11 }" class="text-area" type="textarea" />
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="submitForm">确定</el-button>
+            <el-button @click="cancelForm">取消</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -45,330 +45,172 @@
 // @ts-nocheck
 
 // 解构
-import { defineComponent, ref } from 'vue'
-
+import { defineComponent, reactive, ref } from 'vue'
+import { Delete, Download, Plus, ZoomIn } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
+import { addUser } from '@/api/userMange.js'
+import { useStore } from 'vuex'
 export default defineComponent({
     name: 'AddInfo',
-    props: {
-        info: {
-            type: Object,
-            default: {
-                id: 0,
-                name: '',
-                sex: '',
-                avatar: null,
-                college: '',
-                speciality: '',
-                phone: '',
-                address: '',
-                information: null
-            }
-        }
-    },
-    components: {},
-    setup(props, ctx) {
-        const form = props.info
+    props: {},
+    components: { Delete, Download, Plus, ZoomIn },
+    setup(props, { emit }) {
+        // 上传头像
+        const dialogImageUrl = ref('')
+        const store = useStore()
+        const form = reactive({
+            username: '',
+            password: '',
+            phone: '',
+            email: '',
+            gender: '',
+            roleId: '',
+            address: '',
+            description: '',
+            collegeId: '',
+            professionalId: '',
+            roleId: ''
+        })
+        const value = ref('')
+
+        // 学院专业数据
         const options = [
             {
-                value: 'guide',
-                label: 'Guide',
+                value: '1586905110271827970',
+                label: '软件学院',
                 children: [
                     {
-                        value: 'disciplines',
-                        label: 'Disciplines',
-                        children: [
-                            {
-                                value: 'consistency',
-                                label: 'Consistency'
-                            },
-                            {
-                                value: 'feedback',
-                                label: 'Feedback'
-                            },
-                            {
-                                value: 'efficiency',
-                                label: 'Efficiency'
-                            },
-                            {
-                                value: 'controllability',
-                                label: 'Controllability'
-                            }
-                        ]
-                    },
-                    {
-                        value: 'navigation',
-                        label: 'Navigation',
-                        children: [
-                            {
-                                value: 'side nav',
-                                label: 'Side Navigation'
-                            },
-                            {
-                                value: 'top nav',
-                                label: 'Top Navigation'
-                            }
-                        ]
+                        value: '1586906568190959617',
+                        label: '软件工程'
                     }
                 ]
             },
             {
-                value: 'component',
-                label: 'Component',
+                value: '1587102735507980289',
+                label: '多媒体学院',
                 children: [
                     {
-                        value: 'basic',
-                        label: 'Basic',
-                        children: [
-                            {
-                                value: 'layout',
-                                label: 'Layout'
-                            },
-                            {
-                                value: 'color',
-                                label: 'Color'
-                            },
-                            {
-                                value: 'typography',
-                                label: 'Typography'
-                            },
-                            {
-                                value: 'icon',
-                                label: 'Icon'
-                            },
-                            {
-                                value: 'button',
-                                label: 'Button'
-                            }
-                        ]
-                    },
-                    {
-                        value: 'form',
-                        label: 'Form',
-                        children: [
-                            {
-                                value: 'radio',
-                                label: 'Radio'
-                            },
-                            {
-                                value: 'checkbox',
-                                label: 'Checkbox'
-                            },
-                            {
-                                value: 'input',
-                                label: 'Input'
-                            },
-                            {
-                                value: 'input-number',
-                                label: 'InputNumber'
-                            },
-                            {
-                                value: 'select',
-                                label: 'Select'
-                            },
-                            {
-                                value: 'cascader',
-                                label: 'Cascader'
-                            },
-                            {
-                                value: 'switch',
-                                label: 'Switch'
-                            },
-                            {
-                                value: 'slider',
-                                label: 'Slider'
-                            },
-                            {
-                                value: 'time-picker',
-                                label: 'TimePicker'
-                            },
-                            {
-                                value: 'date-picker',
-                                label: 'DatePicker'
-                            },
-                            {
-                                value: 'datetime-picker',
-                                label: 'DateTimePicker'
-                            },
-                            {
-                                value: 'upload',
-                                label: 'Upload'
-                            },
-                            {
-                                value: 'rate',
-                                label: 'Rate'
-                            },
-                            {
-                                value: 'form',
-                                label: 'Form'
-                            }
-                        ]
-                    },
-                    {
-                        value: 'data',
-                        label: 'Data',
-                        children: [
-                            {
-                                value: 'table',
-                                label: 'Table'
-                            },
-                            {
-                                value: 'tag',
-                                label: 'Tag'
-                            },
-                            {
-                                value: 'progress',
-                                label: 'Progress'
-                            },
-                            {
-                                value: 'tree',
-                                label: 'Tree'
-                            },
-                            {
-                                value: 'pagination',
-                                label: 'Pagination'
-                            },
-                            {
-                                value: 'badge',
-                                label: 'Badge'
-                            }
-                        ]
-                    },
-                    {
-                        value: 'notice',
-                        label: 'Notice',
-                        children: [
-                            {
-                                value: 'alert',
-                                label: 'Alert'
-                            },
-                            {
-                                value: 'loading',
-                                label: 'Loading'
-                            },
-                            {
-                                value: 'message',
-                                label: 'Message'
-                            },
-                            {
-                                value: 'message-box',
-                                label: 'MessageBox'
-                            },
-                            {
-                                value: 'notification',
-                                label: 'Notification'
-                            }
-                        ]
-                    },
-                    {
-                        value: 'navigation',
-                        label: 'Navigation',
-                        children: [
-                            {
-                                value: 'menu',
-                                label: 'Menu'
-                            },
-                            {
-                                value: 'tabs',
-                                label: 'Tabs'
-                            },
-                            {
-                                value: 'breadcrumb',
-                                label: 'Breadcrumb'
-                            },
-                            {
-                                value: 'dropdown',
-                                label: 'Dropdown'
-                            },
-                            {
-                                value: 'steps',
-                                label: 'Steps'
-                            }
-                        ]
-                    },
-                    {
-                        value: 'others',
-                        label: 'Others',
-                        children: [
-                            {
-                                value: 'dialog',
-                                label: 'Dialog'
-                            },
-                            {
-                                value: 'tooltip',
-                                label: 'Tooltip'
-                            },
-                            {
-                                value: 'popover',
-                                label: 'Popover'
-                            },
-                            {
-                                value: 'card',
-                                label: 'Card'
-                            },
-                            {
-                                value: 'carousel',
-                                label: 'Carousel'
-                            },
-                            {
-                                value: 'collapse',
-                                label: 'Collapse'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                value: 'resource',
-                label: 'Resource',
-                children: [
-                    {
-                        value: 'axure',
-                        label: 'Axure Components'
-                    },
-                    {
-                        value: 'sketch',
-                        label: 'Sketch Templates'
-                    },
-                    {
-                        value: 'docs',
-                        label: 'Design Documentation'
+                        value: '1587074835639468033',
+                        label: '计算机科学与技术'
                     }
                 ]
             }
         ]
-        // 上传头像
+        // 学院/专业 改变
+        const handleChange = value => {
+            form.collegeId = value[0]
+            form.professionalId = value[1]
+        }
 
-        return { form, options }
+        //  非空检查
+        const checkForm = () => {
+            return new Promise((resolve, reject) => {
+                if (form.username === '') {
+                    ElMessage.warning({
+                        message: '用户名不能为空',
+                        type: 'warning'
+                    })
+                    return
+                }
+                if (form.password === '') {
+                    ElMessage.warning({
+                        message: '密码不能为空',
+                        type: 'warning'
+                    })
+                    return
+                }
+                if (form.phone === '') {
+                    ElMessage.warning({
+                        message: '验证码不能为空',
+                        type: 'warning'
+                    })
+                    return
+                }
+                if (form.email === '') {
+                    ElMessage.warning({
+                        message: '邮箱不能为空',
+                        type: 'warning'
+                    })
+                    return
+                }
+                if (form.address === '') {
+                    ElMessage.warning({
+                        message: '地址不能为空',
+                        type: 'warning'
+                    })
+                    return
+                }
+
+                resolve(true)
+            })
+        }
+        // 提交
+        const submitForm = () => {
+            checkForm().then(() => {
+                let params = {
+                    username: form.username,
+                    password: form.password,
+                    phone: form.phone,
+                    email: form.email,
+                    gender: form.gender,
+                    roleId: form.roleId,
+                    address: form.address,
+                    description: form.description,
+                    collegeId: form.collegeId,
+                    professionalId: form.professionalId,
+                    roleId: form.roleId,
+                    role: {
+                        roleName: form.roleId === '1585472797252001794' ? '学生' : '教师'
+                    },
+                    college: {
+                        collegeOrProfessional: form.collegeId === '1586905110271827970' ? '软件学院' : '多媒体学院'
+                    },
+                    professional: {
+                        collegeOrProfessional: form.professionalId === '1586906568190959617' ? '软件工程' : '多媒体学院'
+                    }
+                }
+
+                addUser(params).then(data => {
+                    console.log(data)
+                    if (data.data.msg === '添加成功') {
+                        store.dispatch('userManage/addUser', params)
+                        ElMessage.success({
+                            message: '登录成功',
+                            type: 'success',
+                            showClose: true,
+                            duration: 1000
+                        })
+                        emit('changeShow', false)
+                    }
+                })
+            })
+        }
+        // 取消
+        const cancelForm = () => {
+            emit('changeShow', false)
+        }
+
+        return { form, options, dialogImageUrl, value, handleChange, submitForm, cancelForm }
     }
 })
 </script>
 <style lang="scss" scoped>
 .form {
-    width: 1000px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
-    .avatar {
-        width: 100%;
-        margin-left: 30px;
-        :deep(.el-form-item__content) {
-            span {
-                float: left;
-            }
-        }
+    margin: 0 auto;
+    width: 800px;
+    height: 600px;
+    :deep(.el-form-item) {
+        width: 700px;
     }
-}
-:deep(.el-form-item) {
-    .el-input {
-        width: 300px;
+    .item {
     }
-    padding-left: 30px;
-    padding-bottom: 20px;
 }
 .text-area {
     :deep(.el-textarea__inner) {
-        width: 800px;
-        height: 3 00px;
+        width: 600px;
+        height: 100px;
     }
 }
 </style>

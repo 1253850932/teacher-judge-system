@@ -1,17 +1,16 @@
 <template>
-    <el-button type="info" @click="dialogTableVisible = true">查看</el-button>
-    <div class="check-info-box" v-drag v-if="dialogTableVisible">
-        <el-dialog v-model="dialogTableVisible" title="xxx学生基本信息" destroy-on-close>
-            <el-descriptions class="descriptions" :column="1">
-                <el-descriptions-item width="300px" label="名字">kooriookami</el-descriptions-item>
-                <el-descriptions-item width="300px" label="密码">18100000000</el-descriptions-item>
-                <el-descriptions-item width="300px" label="照片">Suzhou</el-descriptions-item>
-                <el-descriptions-item width="300px" label="性别"> </el-descriptions-item>
-                <el-descriptions-item width="300px" label="院系">No.1188, Wuzhong Avenue</el-descriptions-item>
-                <el-descriptions-item width="300px" label="专业">No.1188, Wuzhong Avenue</el-descriptions-item>
-                <el-descriptions-item width="300px" label="联系方式">No.1188, Wuzhong Avenue</el-descriptions-item>
-                <el-descriptions-item width="300px" label="家庭地址">No.1188, Wuzhong Avenue</el-descriptions-item>
-                <el-descriptions-item width="300px" label="详细信息">No.1188, Wuzhong Avenue</el-descriptions-item>
+    <div class="check-info-box" v-drag>
+        <el-dialog v-model="dialogTableVisible" title="基本信息" destroy-on-close>
+            <el-descriptions class="descriptions" :column="1" v-if="users">
+                <el-descriptions-item width="300px" label="名字">{{ users.username }}</el-descriptions-item>
+
+                <el-descriptions-item width="300px" label="照片"></el-descriptions-item>
+                <el-descriptions-item width="300px" label="性别"> {{ users.gender }}</el-descriptions-item>
+
+                <el-descriptions-item width="300px" label="邮箱">{{ users.email }} </el-descriptions-item>
+                <el-descriptions-item width="300px" label="联系方式">{{ users.phone }} </el-descriptions-item>
+                <el-descriptions-item width="300px" label="家庭地址">{{ users.gender }}</el-descriptions-item>
+                <el-descriptions-item width="300px" label="详细信息">{{ users.address }}</el-descriptions-item>
             </el-descriptions>
         </el-dialog>
     </div>
@@ -20,25 +19,24 @@
 // @ts-nocheck
 
 // 解构
-import { defineComponent, ref } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import drag from '@/directive/drag/index'
 
 export default defineComponent({
     name: 'CheckInfo',
     props: {
         // 接收父组件数据
-        info: {
-            type: Object,
-            default: ''
-        }
     },
     directives: { drag },
     components: {},
     setup(props, { emit }) {
         // 对话框是否可见
         const dialogTableVisible = ref(false)
+        const users = reactive({})
+        console.log(users)
         return {
-            dialogTableVisible
+            dialogTableVisible,
+            users
         }
     }
 })

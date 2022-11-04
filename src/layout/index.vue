@@ -35,6 +35,7 @@ import Menu from './Menu/index.vue'
 import Logo from './Logo/index.vue'
 import Header from './Header/index.vue'
 import Tabs from './Tabs/index.vue'
+import { getPageUser } from '../api/userMange'
 export default defineComponent({
     components: {
         Menu,
@@ -70,6 +71,10 @@ export default defineComponent({
         const hideMenu = () => {
             store.commit('app/isCollapseChange', true)
         }
+        // 分页获取用户
+        getPageUser({ currentPage: 1, pageSize: 100, keyword: '' }).then(data => {
+            store.dispatch('userManage/getPageUser', data.data.data)
+        })
         return {
             isCollapse,
             showLogo,

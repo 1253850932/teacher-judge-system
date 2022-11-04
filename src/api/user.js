@@ -1,15 +1,28 @@
 // @ts-nocheck
 import request from '@/utils/system/request'
+const Bearer = 'Bearer '
 
-// 登录api
-export function loginApi(data) {
-    return request({
-        url: '/user/login',
-        method: 'post',
-        baseURL: '/mock',
-        data
-    })
+/**
+ * 账号密码登录
+ * @param {String} username  账号
+ * @param {String} password 密码
+ * @param {String} code 验证码
+ * @param {String} key 验证码key
+ * @returns promise
+ */
+export const userAccountLogin = ({ username, password, code, key }) => {
+    return request(`/login?code=${code}&key=${key}&username=${username}&password=${password}`, 'post')
 }
+
+/**
+ * 获取验证码
+ * @param {String} key 验证码key
+ * @returns promise
+ */
+export const getCaptcha = key => {
+    return request(`/common/captcha?captchaKey=${key === '' ? '' : key}`, 'get')
+}
+export const getUserInfo = () => {}
 
 // 获取用户信息Api
 export function getInfoApi(data) {

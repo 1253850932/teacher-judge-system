@@ -9,7 +9,15 @@
                         <i class="sfont password-icon" :class="passwordType ? 'system-yanjing-guan' : 'system-yanjing'" @click="passwordTypeChange"></i>
                     </template>
                 </el-input>
-                <el-button type="primary" @click="submit" style="width: 250px" size="medium">登录</el-button>
+                <el-radio-group v-model="radio" @change="changeRadio(radio)">
+                    <el-radio :label="'system'">管理员</el-radio>
+                    <el-radio :label="'student'">学生</el-radio>
+                    <el-radio :label="'teacher'">教师</el-radio>
+                </el-radio-group>
+                <!-- 验证码 -->
+                <el-input size="large" v-model="form.code" placeholder="验证码" type="text"> </el-input>
+                <div class="captchaImg"><img @click="changeCaptcha" :src="captchaImg" alt="" /></div>
+                <el-button type="primary" @click="submit" style="width: 250px" size="medium" v-wave>登录</el-button>
             </el-form>
         </div>
     </div>
@@ -19,24 +27,39 @@
 // @ts-nocheck
 
 import { systemTitle } from '@/config'
-import { defineComponent, ref, reactive } from 'vue'
+import { defineComponent, ref, reactive, computed, onBeforeMount, onUpdated } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import { addRoutes } from '@/router'
+import { addRoutes } from '@/router/index.js'
 import { ElMessage } from 'element-plus'
 export default defineComponent({
+    name: 'Login',
     setup() {
         const store = useStore()
         const router = useRouter()
         const route = useRoute()
         const form = reactive({
-            name: 'system',
-            password: '123456'
+            name: 'dcc',
+            password: '1019',
+            code: ''
         })
+        //  密码类型显示隐藏
         const passwordType = ref('password')
         const passwordTypeChange = () => {
             passwordType.value === '' ? (passwordType.value = 'password') : (passwordType.value = '')
         }
+        // 页面渲染之前，拿到验证码
+        onBeforeMount(() => {
+            store.dispatch('user/getCaptcha')
+        })
+        // 点击改变验证码
+        const changeCaptcha = () => {
+            store.dispatch('user/changeCaptcha', captchaKey.value)
+        }
+
+        // 验证码图片
+        const captchaImg = computed(() => store.state.user.captcha.captchaImg)
+        const captchaKey = computed(() => store.state.user.captcha.captchaKey)
         //  登录非空检查
         const checkForm = () => {
             return new Promise((resolve, reject) => {
@@ -54,15 +77,29 @@ export default defineComponent({
                     })
                     return
                 }
+                if (form.code === '') {
+                    ElMessage.warning({
+                        message: '验证码不能为空',
+                        type: 'warning'
+                    })
+                    return
+                }
                 resolve(true)
             })
+        }
+
+        const radio = ref('system')
+        const changeRadio = value => {
+            store.commit('user/tokenChange', value)
         }
         //  登录
         const submit = () => {
             checkForm().then(() => {
                 let params = {
-                    name: form.name,
-                    password: form.password
+                    username: form.name,
+                    password: form.password,
+                    code: form.code,
+                    key: store.state.user.captcha.captchaKey
                 }
                 store.dispatch('user/login', params).then(data => {
                     ElMessage.success({
@@ -71,7 +108,7 @@ export default defineComponent({
                         showClose: true,
                         duration: 1000
                     })
-
+                    // 动态添加路由
                     addRoutes()
                     // 重定向
                     router.push(route.query.redirect || '/')
@@ -83,7 +120,11 @@ export default defineComponent({
             form,
             passwordType,
             passwordTypeChange,
-            submit
+            submit,
+            captchaImg,
+            changeCaptcha,
+            radio,
+            changeRadio
         }
     }
 })
@@ -99,8 +140,8 @@ export default defineComponent({
     background-color: #eef0f3;
 
     .box {
-        width: 400px;
-        height: 350px;
+        width: 480px;
+        height: 430px;
         position: absolute;
         left: 63.6%;
         top: 50%;
@@ -116,14 +157,25 @@ export default defineComponent({
         }
         .form {
             display: flex;
+            position: relative;
             width: 250px;
             flex-wrap: wrap;
             margin: 65px auto 15px;
+            :deep(.el-radio-group) {
+                margin: 10px 0;
+            }
             span {
                 margin: 0 auto;
                 margin-bottom: 30px;
                 font-weight: 600;
                 font-size: 18px;
+            }
+            .captchaImg {
+                position: absolute;
+                cursor: pointer;
+                top: 210px;
+                right: 25px;
+                width: 90px;
             }
             .el-input {
                 width: 250px;

@@ -1,7 +1,5 @@
 <template>
-    <el-config-provider :locale="locale">
-        <router-view></router-view>
-    </el-config-provider>
+    <router-view></router-view>
 </template>
 
 <script>
@@ -9,11 +7,7 @@ import { defineComponent } from 'vue'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 export default defineComponent({
     name: 'App',
-    setup() {
-        return {
-            locale
-        }
-    }
+    setup() {}
 })
 </script>
 

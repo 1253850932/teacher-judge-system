@@ -19,12 +19,13 @@ export default ({ command }) => {
             alias
         },
         server: {
-            port: 3002,
-            host: '0.0.0.0',
-            open: true,
+            port: '8000',
             proxy: {
-                // 代理配置
-                '/dev': 'https://www.fastmock.site/mock/48cab8545e64d93ff9ba66a87ad04f6b/'
+                '/api': {
+                    target: 'http://121.43.163.227:9001', // 凡是遇到 /api 路径的请求，都映射到 target 属性
+                    changeOrigin: true,
+                    rewrite: path => path.replace(/^\/api/, '')
+                }
             }
         },
         build: {
