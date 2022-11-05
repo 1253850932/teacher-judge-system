@@ -33,7 +33,6 @@ export default defineComponent({
         // 对话框是否可见
         const dialogTableVisible = ref(false)
         const users = reactive({})
-        console.log(users)
         return {
             dialogTableVisible,
             users

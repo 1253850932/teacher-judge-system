@@ -29,7 +29,7 @@ const route = [
             {
                 path: 'userManage',
                 component: createNameComponent(() => import('@/views/userManage/index.vue')),
-                meta: { title: '用户管理', cache: false, roles: [2, 1] }
+                meta: { title: '用户管理', cache: false, roles: [2, 1], hideClose: true }
             }
         ]
     },

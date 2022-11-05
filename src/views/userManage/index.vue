@@ -5,7 +5,13 @@
                 <span>用户管理</span>
                 <el-button @click="show = true" class="button" text>新增</el-button>
                 <el-dialog v-model="show" title="增加用户" width="70%" top="20px" align-center open-delay="1">
-                    <AddInfo @changeShow="changeShow" />
+                    <AddInfo ref="addInfo" @changeShow="changeShow" />
+                    <template #footer>
+                        <span class="dialog-footer">
+                            <el-button type="primary" @click="submitForm">确定</el-button>
+                            <el-button @click="cancelForm">取消</el-button>
+                        </span>
+                    </template>
                 </el-dialog>
             </div>
         </template>
@@ -28,7 +34,7 @@
             />
             <el-table-column prop="gender" label="性别" width="50px" />
             <el-table-column prop="college.collegeOrProfessional" label="院系" width="100px" />
-            <el-table-column prop="professional.collegeOrProfessional" label="专业" width="100px" />
+            <el-table-column prop="professional.collegeOrProfessional" label="专业" width="100px" sortable />
             <el-table-column prop="email" label="邮箱" width="150px" />
             <el-table-column prop="phone" label="联系方式" width="150px" />
             <el-table-column prop="address" label="地址" width="200px" />
@@ -42,12 +48,14 @@
         </el-table>
     </el-card>
     <CheckInfo ref="checkInfo"></CheckInfo>
+
+    <EditInfo ref="editInfo" />
 </template>
 
 <script>
 // @ts-nocheck
 
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { deleteUser } from '@/api/userMange.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -55,6 +63,7 @@ export default defineComponent({
     setup({ emit }) {
         const store = useStore()
 
+        const addInfo = ref(null)
         const show = ref(false)
         const users = computed(() => store.state.userManage.users)
         const changeShow = value => {
@@ -100,8 +109,24 @@ export default defineComponent({
             const property = column['property']
             return row[property] === value
         }
+        // 新增按钮操作
+        const submitForm = () => {
+            addInfo.value.submitForm()
+        }
+        const cancelForm = () => {
+            addInfo.value.cancelForm()
+        }
 
-        return { show, checkVisible, checkInfo, filterHandler, users, delUser, changeShow }
+        // 编辑按钮操作
+        const editInfo = ref(null)
+        let currentUser = reactive({})
+        const editUser = value => {
+            currentUser = computed(() => store.state.userManage.users[value])
+            editInfo.value.dialog = true
+            editInfo.value.form = JSON.parse(JSON.stringify(currentUser.value))
+        }
+
+        return { show, checkVisible, checkInfo, filterHandler, users, delUser, changeShow, editUser, submitForm, cancelForm, addInfo, editInfo, currentUser }
     }
 })
 </script>

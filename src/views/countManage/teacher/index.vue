@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <CheckInfo />
+        <AddInfo />
     </div>
 </template>
 

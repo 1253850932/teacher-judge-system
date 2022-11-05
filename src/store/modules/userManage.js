@@ -19,6 +19,13 @@ const mutations = {
     },
     AddUser(state, user) {
         state.users.splice(-1, 0, user)
+    },
+    EditUser(state, user) {
+        console.log(user)
+        const result = state.users.findIndex(item => item.id === user.id)
+        console.log(result)
+
+        state.users.splice(result, 1, user)
     }
 }
 
@@ -35,6 +42,10 @@ const actions = {
     // 增加用户
     addUser({ commit }, user) {
         commit('AddUser', user)
+    },
+    // 修改用户
+    editUser({ commit }, user) {
+        commit('EditUser', user)
     }
 }
 

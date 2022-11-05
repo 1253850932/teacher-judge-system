@@ -1,5 +1,5 @@
 <template>
-    <el-form :model="form" label-width="150px" class="form" :rules="rules" ref="ruleFormRef">
+    <el-form :model="form" label-width="150px" class="form" ref="ruleFormRef">
         <el-form-item :label="'名称'">
             <el-input v-model="form.username" :placeholder="'名称'" class="inputWidth" />
         </el-form-item>
@@ -7,18 +7,18 @@
             <el-input v-model="form.password" :placeholder="'请输入联系方式'" />
         </el-form-item>
         <el-form-item :label="'性别'">
-            <el-radio-group v-model="form.gender" class="ml-4">
-                <el-radio label="男" size="large">男</el-radio>
+            <el-radio-group v-model="form.gender" class="ml-4 itemSex">
+                <el-radio label="男" size="large">男&nbsp;&nbsp;&nbsp;&nbsp;</el-radio>
                 <el-radio label="女" size="large">女</el-radio>
             </el-radio-group>
         </el-form-item>
         <el-form-item :label="'角色'">
-            <el-radio-group v-model="form.roleId" class="ml-4">
+            <el-radio-group v-model="form.roleId" class="ml-4 itemSex">
                 <el-radio label="1585472797252001794" size="large">学生</el-radio>
                 <el-radio label="1585472740486410241" size="large">教师</el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item :label="'院系/专业'" class="item">
+        <el-form-item :label="'院系/专业'">
             <el-cascader :options="options" @change="handleChange" />
         </el-form-item>
 
@@ -35,10 +35,6 @@
         <el-form-item label="详细介绍">
             <el-input v-model="form.description" :autosize="{ minRows: 7, maxRows: 11 }" class="text-area" type="textarea" />
         </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="submitForm">确定</el-button>
-            <el-button @click="cancelForm">取消</el-button>
-        </el-form-item>
     </el-form>
 </template>
 <script>
@@ -52,13 +48,18 @@ import { addUser } from '@/api/userMange.js'
 import { useStore } from 'vuex'
 export default defineComponent({
     name: 'AddInfo',
-    props: {},
+    props: {
+        form: {
+            type: Object,
+            default: ''
+        }
+    },
     components: { Delete, Download, Plus, ZoomIn },
     setup(props, { emit }) {
         // 上传头像
         const dialogImageUrl = ref('')
         const store = useStore()
-        const form = reactive({
+        let form = reactive({
             username: '',
             password: '',
             phone: '',
@@ -171,7 +172,6 @@ export default defineComponent({
                 }
 
                 addUser(params).then(data => {
-                    console.log(data)
                     if (data.data.msg === '添加成功') {
                         store.dispatch('userManage/addUser', params)
                         ElMessage.success({
@@ -189,13 +189,13 @@ export default defineComponent({
         const cancelForm = () => {
             emit('changeShow', false)
         }
-
         return { form, options, dialogImageUrl, value, handleChange, submitForm, cancelForm }
     }
 })
 </script>
 <style lang="scss" scoped>
 .form {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
@@ -204,7 +204,13 @@ export default defineComponent({
     :deep(.el-form-item) {
         width: 700px;
     }
-    .item {
+    :deep(.el-cascader) {
+        position: absolute;
+        left: 0;
+    }
+    .itemSex {
+        position: absolute;
+        left: 0;
     }
 }
 .text-area {
