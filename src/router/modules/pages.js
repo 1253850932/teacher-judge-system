@@ -8,28 +8,16 @@ const route = [
         redirect: '/user/userManage',
         meta: { title: '用户管理', icon: 'el-icon-user ', roles: [2, 1] },
         alwayShow: false,
-        // children: [
-        //     {
-        //         path: 'crudTable',
-        //         component: createNameComponent(() => import('@/views/main/pages/crudTable/index.vue')),
-        //         meta: { title: '学生管理', cache: false, roles: [2, 1] }
-        //     },
-        //     {
-        //         path: 'categoryTable',
-        //         component: createNameComponent(() => import('@/views/main/pages/categoryTable/index.vue')),
-        //         meta: { title: '教师管理', cache: true, roles: [2, 1] }
-        //     },
-        //     {
-        //         path: 'treeTable',
-        //         component: createNameComponent(() => import('@/views/main/pages/treeTable/index.vue')),
-        //         meta: { title: '评价结果', cache: true, roles: [2, 1] }
-        //     }
-        // ]
         children: [
             {
                 path: 'userManage',
                 component: createNameComponent(() => import('@/views/userManage/index.vue')),
                 meta: { title: '用户管理', cache: false, roles: [2, 1], hideClose: true }
+            },
+            {
+                path: 'validManage',
+                component: createNameComponent(() => import('@/views/userManage/valid/index.vue')),
+                meta: { title: '权限管理', cache: false, roles: [2, 1], hideClose: true }
             }
         ]
     },

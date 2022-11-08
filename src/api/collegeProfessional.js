@@ -2,11 +2,11 @@
 import request from '@/utils/system/request'
 /**
  * 添加学院
- * @param {String} College
+ * @param {String} collegeOrProfessional
  * @returns
  */
-export const addCollege = College => {
-    return request('/colleteProfessional/addCollege', 'post', College)
+export const addCollege = collegeOrProfessional => {
+    return request('/colleteProfessional/addCollege', 'post', collegeOrProfessional)
 }
 /**
  * 添加专业
@@ -19,71 +19,64 @@ export const addProfessional = ({ collegeOrProfessional, parentId }) => {
 }
 /**
  * 禁用专业
- * @param {String} collegeOrProfessional
- * @param {String} parentId
+ * @param {String} id
  * @returns
  */
-export const disableProfessional = () => {
-    return request('/colleteProfessional/disableProfessional/1586906568190959617', 'put')
+export const disableProfessional = id => {
+    return request(`/colleteProfessional/disableProfessional/${id}`, 'put')
 }
-/**
- * 禁用学院
- * @param {String} collegeOrProfessional
- * @param {String} parentId
- * @returns
- */
-export const disableCollege = () => {
-    return request('/colleteProfessional/disableCollege/1586906568190959617', 'put')
-}
+
 /**
  * 启用学院
- * @param {String} collegeOrProfessional
- * @param {String} parentId
+ * @param {String} id
  * @returns
  */
 export const enableCollege = () => {
-    return request('/colleteProfessional/enableCollege/1586906568190959617', 'put')
+    return request(`/colleteProfessional/enableCollege/${id}`, 'put')
 }
 /**
  * 启用专业
- * @param {String} collegeOrProfessional
- * @param {String} parentId
+ * @param {String} id
  * @returns
  */
 export const enableProfessional = () => {
-    return request('/colleteProfessional/enableProfessional/1586906568190959617', 'put')
+    return request(`/colleteProfessional/enableProfessional/${id}`, 'put')
 }
 /**
  * 删除专业
- * @param {String} collegeOrProfessional
- * @param {String} parentId
+ * @param {String} id
  * @returns
  */
-export const deleteProfessional = () => {
-    return request('/colleteProfessional/deleteProfessional/1586906568190959617', 'del')
+export const deleteProfessional = id => {
+    return request(`/colleteProfessional/deleteProfessional/${id}`, 'DELETE')
 }
 /**
  * 删除学院
- * @param {String} collegeOrProfessional
- * @param {String} parentId
+ * @param {String} id
  * @returns
  */
 export const deleteCollege = () => {
-    return request('/colleteProfessional/deleteCollege/1586906568190959617', 'del')
+    return request(`/colleteProfessional/deleteCollege/${id}`, 'DELETE')
 }
 /**
  * 获取所有有效学院
- * @param {String} collegeOrProfessional
- * @param {String} parentId
  * @returns
  */
 export const getAllValidCollege = () => {
-    return request('/colleteProfessional/getAllValidCollege/1586906568190959617', 'del')
+    return request('/colleteProfessional/getAllValidCollege', 'get')
+}
+/**
+ * 获取所有有效专业
+ * @returns
+ */
+export const getAllValidProfessional = () => {
+    return request('/colleteProfessional/getAllValidProfessional', 'get')
 }
 /**
  * 分页获取学院
- * @param {String} collegeOrProfessional
- * @param {String} parentId
+ * @param {String} currentPage
+ * @param {String} pageSize
+ * @param {String} keyword
  * @returns
  */
 export const getPageCollege = ({ currentPage, pageSize, keyword }) => {
@@ -91,46 +84,36 @@ export const getPageCollege = ({ currentPage, pageSize, keyword }) => {
 }
 /**
  * 分页获取专业
- * @param {String} collegeOrProfessional
- * @param {String} parentId
+ * @param {String} currentPage
+ * @param {String} pageSize
+ * @param {String} keyword
  * @returns
  */
 export const getPageProfessional = ({ currentPage, pageSize, keyword }) => {
     return request(`/colleteProfessional/getPageProfessional?currentPage=${currentPage}&pageSize=${pageSize}&keyword=${keyword}`, 'get')
 }
-/**
- * 分页获取专业
- * @param {String} collegeOrProfessional
- * @param {String} parentId
- * @returns
- */
-export const getPageCollege = ({ currentPage, pageSize, keyword }) => {
-    return request(`/colleteProfessional/getPageProfessional?currentPage=${currentPage}&pageSize=${pageSize}&keyword=${keyword}`, 'get')
-}
+
 /**
  * 根据id获取学院
- * @param {String} collegeOrProfessional
- * @param {String} parentId
+ * @param {String} id
  * @returns
  */
-export const getCollegeById = () => {
-    return request('/colleteProfessional/getCollegeById/1586905110271827970', 'get')
+export const getCollegeById = id => {
+    return request(`/colleteProfessional/deleteCollege/${id}`, 'get')
 }
 /**
  * 根据id获取专业
- * @param {String} collegeOrProfessional
- * @param {String} parentId
+ * @param {String} id
  * @returns
  */
-export const getProfessionalById = () => {
-    return request('/colleteProfessional/getProfessionalById/1587074835639468033', 'get')
+export const getProfessionalById = id => {
+    return request(`/colleteProfessional/getProfessionalById/${id}`, 'get')
 }
 /**
  * 根据学院id获取包含的专业
- * @param {String} collegeOrProfessional
- * @param {String} parentId
+ * @param {String} id
  * @returns
  */
-export const getAllProfessionalByCollegeId = () => {
-    return request('/colleteProfessional/getAllProfessionalByCollegeId/1586905110271827970', 'get')
+export const getAllProfessionalByCollegeId = id => {
+    return request(`/colleteProfessional/getAllProfessionalByCollegeId/${id}`, 'get')
 }

@@ -393,3 +393,10 @@ const instance = axios.create({
 		}
 		</script>
 ```		
+
+
+### 在项目中遇到问题
+  `TypeError: Cannot read properties of undefined (reading 'deep')`  
+ > 错误记录：此错误由vue3.0报出， 使用了未注册的指令
+
+如：在`login.vue`中的登录按钮使用了 `v-ware` 指令，而没有在`main.js` 声明注册

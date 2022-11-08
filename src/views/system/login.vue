@@ -17,7 +17,7 @@
                 <!-- 验证码 -->
                 <el-input size="large" v-model="form.code" placeholder="验证码" type="text"> </el-input>
                 <div class="captchaImg"><img @click="changeCaptcha" :src="captchaImg" alt="" /></div>
-                <el-button type="primary" @click="submit" style="width: 250px" size="medium" v-wave>登录</el-button>
+                <el-button type="primary" @click="submit" style="width: 250px" size="medium">登录</el-button>
             </el-form>
         </div>
     </div>
@@ -109,7 +109,7 @@ export default defineComponent({
                         duration: 1000
                     })
                     // 动态添加路由
-                    addRoutes()
+                    addRoutes(radio.value)
                     // 重定向
                     router.push(route.query.redirect || '/')
                 })

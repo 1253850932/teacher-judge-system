@@ -23,8 +23,6 @@ const mutations = {
     EditUser(state, user) {
         console.log(user)
         const result = state.users.findIndex(item => item.id === user.id)
-        console.log(result)
-
         state.users.splice(result, 1, user)
     }
 }

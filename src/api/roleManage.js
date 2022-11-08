@@ -2,32 +2,43 @@
 import request from '@/utils/system/request'
 /**
  * 添加角色
- * @param {JSON} BODYraw
+ * @param {string} roleName
  * @returns
  */
-export const addRole = data => {
-    return request('/role/addRole', 'post', data)
+export const addRole = roleName => {
+    return request('/role/addRole', 'post', roleName)
 }
 /**
  * 启用角色
- * @param {JSON} BODYraw
+ * @param {string} id 用户ID
  * @returns
  */
-export const enableRole = data => {
-    return request('/role/enableRole', 'put')
+export const enableRole = id => {
+    return request(`/role/enableRole/${id}`, 'put')
 }
 
 /**
  * 禁用角色
- * @param {JSON} BODYraw
+ * @param {string} id 用户ID
  * @returns
  */
-export const disableRole = data => {
-    return request('/role/disableRole', 'put', data)
+export const disableRole = id => {
+    return request(`/role/disableRole/${id}`, 'put')
+}
+
+/**
+ * 删除角色
+ * @param {string} id 用户ID
+ * @returns
+ */
+export const deleteRole = id => {
+    return request(`/role/deleteRole/${id}`, 'DELETE')
 }
 /**
  * 分页获取角色
- * @param {JSON} BODYraw
+ * @param {number} currentPage
+ * @param {number} pageSize
+ * @param {number} keyword
  * @returns
  */
 export const getPageRole = ({ currentPage, pageSize, keyword }) => {
@@ -35,9 +46,16 @@ export const getPageRole = ({ currentPage, pageSize, keyword }) => {
 }
 /**
  * 根据id获取角色
- * @param {JSON} BODYraw
+ * @param {string} id roleId
  * @returns
  */
-export const getRoleById = data => {
-    return request('/role/getRoleById', 'put')
+export const getRoleById = id => {
+    return request(`/role/getRoleById/${id}`, 'get')
+}
+/**
+ * 获取所有有效角色
+ * @returns
+ */
+export const getAllValidRole = id => {
+    return request('/role/getAllValidRole', 'get')
 }

@@ -55,15 +55,18 @@
 <script>
 // @ts-nocheck
 
-import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref, computed } from 'vue'
 import { BaiduMap, BmGeolocation, BmMarker, BmLabel, BmInfoWindow, BmScale } from 'vue-baidu-map-3x'
 import * as echarts from 'echarts'
+import { useStore } from 'vuex'
+import { getPageUser } from '@/api/userMange.js'
 
 // 引入Echarts
 // import echarts from '@/utils/echarts.js'
 export default defineComponent({
     components: { BaiduMap, BmGeolocation, BmMarker, BmLabel, BmInfoWindow, BmScale },
     setup() {
+        const store = useStore()
         // // 地图
         // const show = ref(true)
 
@@ -108,11 +111,11 @@ export default defineComponent({
                         type: 'pie',
                         data: [
                             {
-                                value: 335,
+                                value: getStudents(),
                                 name: '学生'
                             },
                             {
-                                value: 234,
+                                value: getTeachers(),
                                 name: '教师'
                             }
                         ]
@@ -164,7 +167,28 @@ export default defineComponent({
                 chart.resize()
             }
         }
-
+        // 分页获取用户
+        getPageUser({ currentPage: 1, pageSize: 100, keyword: '' }).then(data => {
+            store.dispatch('userManage/getPageUser', data.data.data)
+        })
+        // 获取教师\学生人数
+        const roles = computed(() => store.state.userManage.users)
+        // 获取教师人数
+        const getTeachers = () => {
+            let arr = 0
+            roles.value.forEach(item => {
+                if (item.role.roleName === '教师') arr++
+            })
+            return arr
+        }
+        // 获取学生人数
+        const getStudents = () => {
+            let arr = 0
+            roles.value.forEach(item => {
+                if (item.role.roleName === '学生') arr++
+            })
+            return arr
+        }
         return { courseChart, barChart }
     }
 })

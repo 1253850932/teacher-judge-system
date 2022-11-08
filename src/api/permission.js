@@ -1,50 +1,73 @@
 // @ts-nocheck
 import request from '@/utils/system/request'
 /**
- * 禁用权限
- * @param {String} College
+ * 添加权限
+ * @param {String} permissionApi
+ * @param {String} permissionName
+ * @param {String} permissionType
  * @returns
  */
-export const disablePermission = () => {
-    return request('/permission/disablePermission/1587258291740790786', 'put')
+export const addPermission = ({ permissionApi, permissionName, permissionType }) => {
+    return request('/permission/addPermission', 'post', {
+        permissionApi,
+        permissionName,
+        permissionType
+    })
+}
+/**
+ * 禁用权限
+ * @param {String} id
+ * @returns
+ */
+export const disablePermission = id => {
+    return request(`/permission/disablePermission/${id}`, 'put')
 }
 /**
  * 启用权限
- * @param {String} College
+ * @param {String} id
  * @returns
  */
-export const enablePermission = () => {
-    return request('/permission/enablePermission/1587258291740790786', 'put')
+export const enablePermission = id => {
+    return request(`/permission/enablePermission/${id}`, 'put')
 }
 /**
  * 删除权限
- * @param {String} College
+ * @param {String} id
  * @returns
  */
-export const deletePermission = () => {
-    return request('/permission/deletePermission/1587258291740790786', 'del')
+export const deletePermission = id => {
+    return request(`/permission/deletePermission/${id}`, 'DELETE')
 }
 /**
  * 获取所有有效权限
- * @param {String} College
  * @returns
  */
-export const deletePermission = () => {
+export const getAllValidPermissions = () => {
     return request('/permission/getAllValidPermissions', 'get')
 }
 /**
  * 分页获取权限
- * @param {String} College
+ * @param {String} currentPage
+ * @param {String} pageSize
+ * @param {String} keyword
  * @returns
  */
-export const getPagePermission = () => {
-    return request(`/permission/getPagePermission?currentPage=1&pageSize=2&keyword=管理`, 'get')
+export const getPagePermission = ({ currentPage, pageSize, keyword }) => {
+    return request(`/permission/getPagePermission?currentPage=${currentPage}&pageSize=${pageSize}&keyword=${keyword}`, 'get')
 }
 /**
  * 根据id获取权限
- * @param {String} College
+ * @param {String} id
  * @returns
  */
-export const getPermissionById = () => {
-    return request(`/permission/getPermissionById/1587993075257544706`, 'get')
+export const getPermissionById = id => {
+    return request(`/permission/getPermissionById/${id}`, 'get')
+}
+/**
+ * 根据角色id获取对应的所有有效权限
+ * @param {String} id
+ * @returns
+ */
+export const getAllValidPermissionByRoleId = id => {
+    return request(`/permission/getAllValidPermissionByRoleId/${id}`, 'get')
 }

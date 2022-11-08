@@ -67,7 +67,6 @@ export default defineComponent({
         const show = ref(false)
         const users = computed(() => store.state.userManage.users)
         const changeShow = value => {
-            console.log(value)
             show.value = value
         }
         // 操作 查看按钮

@@ -11,9 +11,13 @@
     </el-card>
 </template>
 <script>
+// @ts-nocheck
+
 // 解构
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { Search } from '@element-plus/icons-vue'
+import { getAllValidCollege, getAllValidProfessional } from '@/api/collegeProfessional'
+import { useStore } from 'vuex'
 export default defineComponent({
     name: '',
     props: {
@@ -21,6 +25,21 @@ export default defineComponent({
     },
     components: { Search },
     setup(props, ctx) {
+        const store = useStore()
+        // 获取所有有效学院
+        getAllValidCollege().then(data => {
+            if (data.data.msg === '获取成功') {
+                store.dispatch('college/getAllValidCollege', data.data.data)
+            }
+        })
+        const allCollege = computed(() => store.state.college.colleges)
+        console.log(allCollege.value)
+        // 获取所有有效专业
+        getAllValidProfessional().then(data => {
+            if (data.data.msg === '获取成功') {
+                store.dispatch('college/getAllValidProfessional', data.data.data)
+            }
+        })
         return {}
     }
 })
