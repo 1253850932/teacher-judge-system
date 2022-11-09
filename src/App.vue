@@ -7,7 +7,20 @@ import { defineComponent } from 'vue'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 export default defineComponent({
     name: 'App',
-    setup() {}
+    setup() {
+        // 获取所有有效学院
+        // getAllValidCollege().then(data => {
+        //     if ((data.data.msg = '获取成功')) {
+        //         store.dispatch('college/getAllCollegeOrProfessional', data.data.data)
+        //     }
+        // })
+        // //  获取所有有效专业
+        // getAllValidProfessional().then(data => {
+        //     if ((data.data.msg = '获取成功')) {
+        //         store.dispatch('college/getAllValidProfessional', data.data.data)
+        //     }
+        // })
+    }
 })
 </script>
 

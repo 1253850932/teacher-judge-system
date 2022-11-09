@@ -29,7 +29,9 @@
 
 import { defineComponent, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { getPageCourse, addCollege } from '@/api/course.js'
+import { getAllValidPermissions, deletePermission, addPermission, enablePermission, disablePermission } from '@/api/permission.js'
+
 import { useEventListener } from '@vueuse/core'
 import Menu from './Menu/index.vue'
 import Logo from './Logo/index.vue'
@@ -58,6 +60,18 @@ export default defineComponent({
                 store.commit('app/isCollapseChange', false)
             }
         }
+        getPageCourse({ currentPage: 1, pageSize: 100, keyword: '' }).then(data => {
+            if (data.data.msg === '获取成功') {
+                store.dispatch('course/getAllCourse', data.data.data)
+            }
+        })
+
+        // 获取所有权限
+        getAllValidPermissions().then(data => {
+            if (data.data.msg === '获取成功') {
+                store.dispatch('valid/getValid', data.data.data)
+            }
+        })
         // 初始化调用
         resizeHandler()
         // beforeMount

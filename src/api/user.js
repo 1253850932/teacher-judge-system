@@ -1,6 +1,5 @@
 // @ts-nocheck
 import request from '@/utils/system/request'
-const Bearer = 'Bearer '
 
 /**
  * 账号密码登录

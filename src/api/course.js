@@ -77,7 +77,7 @@ export const getPageCourse = ({ currentPage, pageSize, keyword }) => {
     return request(`/course/getPageCourse?currentPage=${currentPage}&pageSize=${pageSize}&keyword=${keyword}`, 'get')
 }
 /**
- * 分页获取课程
+ * 根据id获取课程
  * @param {String} id
  * @returns
  */
